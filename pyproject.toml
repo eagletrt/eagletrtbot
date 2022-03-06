@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "eagletrtbot"
+version = "0.1.0"
+description = ""
+authors = ["Filippo Rossi <12383260+notfilippo@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-telegram-bot = "^13.11"
+APScheduler = ">=3.6"
+SQLAlchemy = "^1.4.31"
+instagrapi = "^1.16.14"
+dateparser = "^1.1.0"
+Pillow = "^9.0.1"
+tzlocal = "^4.1"
+
+[tool.poetry.dev-dependencies]
+black = "^22.1.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
