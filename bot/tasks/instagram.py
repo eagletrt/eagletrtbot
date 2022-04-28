@@ -43,8 +43,8 @@ def send_media(media: Media):
 
 def task():
     cl = Client()
-    if os.path.exists("instagram.json"):
-        cl.load_settings("instagram.json")
+    if os.path.exists("data/instagram.json"):
+        cl.load_settings("data/instagram.json")
     cl.login("eagletrt", os.environ["INSTAGRAM_PASSWORD"])
     cl.dump_settings("instagram.json")
     medias = cl.user_medias(cl.user_id, amount=1)

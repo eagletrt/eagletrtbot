@@ -29,7 +29,7 @@ def odg(update: Update, ctx: CallbackContext):
             odg = (
                 session.query(Odg)
                 .filter_by(chat=chat)
-                .order_by(Odg.time_updated.desc())
+                .order_by(Odg.time_created.desc())
                 .all()
             )
         odg_txt = "\n\n".join(

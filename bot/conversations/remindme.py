@@ -35,8 +35,8 @@ class Reminder(Base):
 
 
 REMINDME_WHAT = 0
-REMINDME_WHAT_ID = "remindme_what"
-REMINDME_WHAT_QUESTION = "remindme_what_question"
+REMINDME_WHEN_ID = "remindme_what"
+REMINDME_QUESTION_ID = "remindme_question_ID"
 
 @only_eagle
 def remindme(update: Update, ctx: CallbackContext) -> int:
@@ -69,17 +69,18 @@ def remindme(update: Update, ctx: CallbackContext) -> int:
         quote=True,
         reply_markup=ForceReply(selective=True, input_field_placeholder="Comprare il latte..."),
     )
-    ctx.user_data[REMINDME_WHAT_QUESTION] = question
+    ctx.user_data[REMINDME_WHEN_ID] = when
+    ctx.user_data[REMINDME_QUESTION_ID] = question
 
     return REMINDME_WHAT
 
 
 def remindme_what(update: Update, ctx: CallbackContext) -> int:
-    when = ctx.user_data[REMINDME_WHAT_ID]
+    when = ctx.user_data[REMINDME_WHEN_ID]
     what = update.message.text
     chat = update.effective_chat.id
 
-    ctx.user_data[REMINDME_WHAT_QUESTION].delete()
+    ctx.user_data[REMINDME_QUESTION_ID].delete()
 
     try:
         with Session() as session:
@@ -135,7 +136,7 @@ def remind(id: int) -> None:
 
 
 def cancel(update: Update, ctx: CallbackContext) -> int:
-    ctx.user_data[REMINDME_WHAT_QUESTION].delete()
+    ctx.user_data[REMINDME_QUESTION_ID].delete()
     update.message.reply_text(f"Ok cara, parleremo più tardi...", quote=True)
 
     return ConversationHandler.END
