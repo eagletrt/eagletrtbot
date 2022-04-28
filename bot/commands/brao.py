@@ -22,7 +22,7 @@ def parking(update: Update, _: CallbackContext):
 
 @only_eagle
 def piacere(update: Update, _: CallbackContext):
-    update.message.reply_markdown_v2("""Piacere cara, sono *T\.E\.C\.S*
+    update.message.reply_markdown_v2("""Piacere cara, sono *T\.E\.C\.S\.*
 👷‍♂️ *T*ecnico
 ⚡ *E*lettronico
 👨‍💼 *C*apo
