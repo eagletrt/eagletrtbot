@@ -1,0 +1,6 @@
+.env
+__pycache__
+jobs.sqlite
+bot.sqlite
+bot.pickle
+instagram.json
