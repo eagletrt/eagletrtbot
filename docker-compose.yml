@@ -4,10 +4,7 @@ services:
     bot:
         build: .
         volumes:
-            - ./bot.sqlite:/bot.sqlite
-            - ./jobs.sqlite:/jobs.sqlite
-            - ./bot.pickle:/bot.pickle
-            - ./instagram.json:/instagram.json
+            - ./data:/data
         environment:
             - TOKEN=${TOKEN}
             - INSTAGRAM_PASSWORD=${INSTAGRAM_PASSWORD}

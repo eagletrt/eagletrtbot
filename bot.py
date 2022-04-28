@@ -37,7 +37,7 @@ def main() -> None:
     Base.metadata.create_all(engine)
     Session.configure(bind=engine)
 
-    persistance = PicklePersistence(filename="bot.pickle")
+    persistance = PicklePersistence(filename="data/bot.pickle")
     updater = Updater(os.environ["TOKEN"], persistence=persistance)
 
     dispatcher = updater.dispatcher
