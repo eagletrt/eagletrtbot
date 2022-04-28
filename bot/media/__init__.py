@@ -9,6 +9,8 @@ FONT = ImageFont.truetype(str((base / "comic.ttf")), 140)
 
 PARKING_SHORT_PATH = base / "parking.mp3"
 
+LIKE_AND_SAVE = base / "like_and_save.webp"
+
 TECS_PATHS = [
     base / "tecs/tecs_0.webp",
     base / "tecs/tecs_1.webp",
