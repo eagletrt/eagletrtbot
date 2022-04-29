@@ -4,7 +4,7 @@ RUN pip install poetry
 
 COPY poetry.lock pyproject.toml ./
 
-RUN poetry install
+RUN poetry install 
 
 COPY . ./
 

@@ -55,12 +55,17 @@ def main() -> None:
 
     updater.start_polling()
 
-    scheduler.add_job(instagram.task, "interval", minutes=5, jobstore="volatile")
+    instagram_task = scheduler.add_job(instagram.task, "interval", minutes=5, jobstore="volatile")
+
     scheduler.start()
 
     instagram.task()
 
     updater.idle()
+
+    instagram_task.remove()
+    scheduler.shutdown()
+
 
 
 if __name__ == "__main__":

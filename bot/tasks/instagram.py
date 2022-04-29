@@ -48,10 +48,17 @@ def send_media(media: Media):
 
 def task():
     cl = Client()
-    if os.path.exists("data/instagram.json"):
-        cl.load_settings("data/instagram.json")
-    cl.login("eagletrt", os.environ["INSTAGRAM_PASSWORD"])
-    cl.dump_settings("instagram.json")
+
+    try:
+        if os.path.exists("data/instagram.json"):
+            cl.load_settings("data/instagram.json")
+        cl.login("eagletrt", os.environ["INSTAGRAM_PASSWORD"])
+        cl.dump_settings("instagram.json")
+    except Exception as error:
+        print(error)
+        print("instagram login failed")
+        return
+
     medias = cl.user_medias(cl.user_id, amount=1)
 
     with Session() as session:
