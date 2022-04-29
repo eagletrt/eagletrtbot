@@ -5,6 +5,7 @@ services:
         build: .
         volumes:
             - ./data:/data
+            - /etc/localtime:/etc/localtime:ro
         environment:
             - TOKEN=${TOKEN}
             - INSTAGRAM_PASSWORD=${INSTAGRAM_PASSWORD}
