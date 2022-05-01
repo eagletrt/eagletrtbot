@@ -54,7 +54,9 @@ def task():
         if os.path.exists("data/instagram.json"):
             cl.load_settings("data/instagram.json")
         cl.login("eagletrt", os.environ["INSTAGRAM_PASSWORD"])
-        cl.dump_settings("instagram.json")
+        if not os.path.exists("data/instagram.json"):
+            cl.dump_settings("data/instagram.json")
+        cl.get_timeline_feed()
     except Exception as error:
         print(error)
         print("instagram login failed")
