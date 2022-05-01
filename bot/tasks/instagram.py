@@ -28,9 +28,9 @@ def send_media(media: Media):
     url = f"https://www.instagram.com/p/{media.code}"
     text = f"{caption}\n\n🌐 {url}"
     if media.media_type == PHOTO:
-        BOT.send_photo(config.SPAM, media.thumbnail_url, caption=text)
+        message = BOT.send_photo(config.SPAM, media.thumbnail_url, caption=text)
     elif media.media_type == VIDEO:
-        BOT.send_video(config.SPAM, media.video_url, caption=text)
+        message = BOT.send_video(config.SPAM, media.video_url, caption=text)
     elif media.media_type == ALBUM:
         if len(media.resources) > 10:
             media.resources = media.resources[:10]
@@ -41,9 +41,10 @@ def send_media(media: Media):
             for resource in media.resources
         ]
         resources[0].caption = text
-        BOT.send_media_group(config.SPAM, resources)
+        message = BOT.send_media_group(config.SPAM, resources)
     with open(LIKE_AND_SAVE, "rb") as sticker:
         BOT.send_sticker(config.SPAM, sticker)
+    message.pin(False)
 
 
 def task():
