@@ -24,7 +24,7 @@ class InstagramMedia(Base):
 
 
 def send_media(media: Media):
-    caption = media.caption_text # TODO: add link
+    caption = media.caption_text  # TODO: add link
     url = f"https://www.instagram.com/p/{media.code}"
     text = f"{caption}\n\n🌐 {url}"
     if media.media_type == PHOTO:
@@ -48,6 +48,10 @@ def send_media(media: Media):
 
 
 def task():
+    if os.environ.get("NO_INSTAGRAM", None) is not None:
+        print("Instagram task didn't run because NO_INSTAGRAM was set in env")
+        return
+
     cl = Client()
 
     try:
@@ -65,9 +69,14 @@ def task():
     medias = cl.user_medias(cl.user_id, amount=1)
 
     with Session() as session:
-        empty = session.query(InstagramMedia).count() == 0 # prevent flood on first start
+        empty = (
+            session.query(InstagramMedia).count() == 0
+        )  # prevent flood on first start
         for media in medias:
-            if session.query(InstagramMedia).filter_by(instagram_id=media.id).count() == 0:
+            if (
+                session.query(InstagramMedia).filter_by(instagram_id=media.id).count()
+                == 0
+            ):
                 if not empty:
                     send_media(media)
                 session.add(InstagramMedia(instagram_id=media.id))

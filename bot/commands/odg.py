@@ -1,16 +1,12 @@
-from datetime import datetime
 from sqlalchemy import Column, DateTime, Integer, Sequence, String, func
 
 from telegram import Update
-from telegram.ext import (
-    CallbackContext,
-    Dispatcher,
-    CommandHandler
-)
+from telegram.ext import CallbackContext, Dispatcher, CommandHandler
 
 from bot.database.base import Base
 from bot.database.session import Session
 from bot.utils import escape, only_eagle
+
 
 class Odg(Base):
     __tablename__ = "odg"
@@ -20,9 +16,20 @@ class Odg(Base):
     creator = Column(String)
     time_created = Column(DateTime(timezone=True), server_default=func.now())
 
+
 @only_eagle
 def odg(update: Update, ctx: CallbackContext):
     chat = update.effective_chat.id
+    if len(ctx.args) == 1 and ctx.args[0] == "reset":
+        with Session() as session:
+            session.query(Odg).filter_by(chat=chat).delete()
+            session.commit()
+
+        update.message.reply_text(
+            f"Ok cara, ho cancellato l'ODG",
+            quote=True,
+        )
+        return
 
     if len(ctx.args) == 0:
         with Session() as session:
@@ -33,11 +40,7 @@ def odg(update: Update, ctx: CallbackContext):
                 .all()
             )
         odg_txt = "\n\n".join(
-            [
-                f"📝 *{escape(item.what)}*\n"
-                + f"👤 {escape(item.creator)}"
-                for item in odg
-            ]
+            [f"📝 *{escape(item.what)}*\n" + f"👤 {escape(item.creator)}" for item in odg]
         )
         update.message.reply_markdown_v2(
             f"L'ODG conta {len(odg)} cose\.\n\n{odg_txt}",
@@ -55,22 +58,10 @@ def odg(update: Update, ctx: CallbackContext):
         session.commit()
 
     update.message.reply_text(
-        f"Ok cara, ho aggiunto \"{what}\" all'ODG",
+        f'Ok cara, ho aggiunto "{what}" all\'ODG',
         quote=True,
     )
 
-@only_eagle
-def odg_clear(update: Update, _: CallbackContext):
-    chat = update.effective_chat.id
-    with Session() as session:
-        session.query(Odg).filter_by(chat=chat).delete()
-        session.commit()
-
-    update.message.reply_text(
-        f"Ok cara, ho cancellato l'ODG",
-        quote=True,
-    )
 
 def register(dispatcher: Dispatcher[CallbackContext, dict, dict, dict]):
     dispatcher.add_handler(CommandHandler("odg", odg))
-    dispatcher.add_handler(CommandHandler("odg_clear", odg_clear))

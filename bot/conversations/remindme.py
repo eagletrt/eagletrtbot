@@ -38,6 +38,7 @@ REMINDME_WHAT = 0
 REMINDME_WHEN_ID = "remindme_what"
 REMINDME_QUESTION_ID = "remindme_question_ID"
 
+
 @only_eagle
 def remindme(update: Update, ctx: CallbackContext) -> int:
     if len(ctx.args) == 0:
@@ -67,7 +68,9 @@ def remindme(update: Update, ctx: CallbackContext) -> int:
     question = update.message.reply_text(
         f"Ok cara, cosa ti devo ricordare il {when.strftime('%d/%m/%Y')} alle {when.strftime('%H:%M')}??\n\nRispondi /cancel per annullare.",
         quote=True,
-        reply_markup=ForceReply(selective=True, input_field_placeholder="Comprare il latte..."),
+        reply_markup=ForceReply(
+            selective=True, input_field_placeholder="Comprare il latte..."
+        ),
     )
     ctx.user_data[REMINDME_WHEN_ID] = when
     ctx.user_data[REMINDME_QUESTION_ID] = question
@@ -102,6 +105,7 @@ def remindme_what(update: Update, ctx: CallbackContext) -> int:
     )
 
     return ConversationHandler.END
+
 
 @only_eagle
 def reminders(update: Update, _: CallbackContext) -> None:

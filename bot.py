@@ -2,13 +2,8 @@ import os
 import logging
 
 from telegram import Update
-from telegram.ext import (
-    Updater,
-    CommandHandler,
-    CallbackContext,
-    PicklePersistence
-)
-from bot.commands import brao, fire, odg
+from telegram.ext import Updater, CommandHandler, CallbackContext, PicklePersistence
+from bot.commands import brao, fire, odg, punti
 
 from bot.jobs import scheduler
 from bot.conversations import remindme
@@ -22,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 def start(update: Update, ctx: CallbackContext) -> None:
-    return info(update, ctx)
+    return brao.piacere(update, ctx)
 
 
 def info(update: Update, _: CallbackContext):
@@ -48,6 +43,7 @@ def main() -> None:
     fire.register(dispatcher)
     brao.register(dispatcher)
     odg.register(dispatcher)
+    punti.register(dispatcher)
 
     bot = dispatcher.bot
 
@@ -55,7 +51,9 @@ def main() -> None:
 
     updater.start_polling()
 
-    instagram_task = scheduler.add_job(instagram.task, "interval", minutes=5, jobstore="volatile")
+    instagram_task = scheduler.add_job(
+        instagram.task, "interval", minutes=5, jobstore="volatile"
+    )
 
     scheduler.start()
 
@@ -65,7 +63,6 @@ def main() -> None:
 
     instagram_task.remove()
     scheduler.shutdown()
-
 
 
 if __name__ == "__main__":
