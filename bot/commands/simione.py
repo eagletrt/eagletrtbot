@@ -11,11 +11,17 @@ from bot.utils import only_eagle
 
 @only_eagle
 def simione(update: Update, ctx: CallbackContext):
+    default = "SIMIONE!"
+
+    if update.message is not None and update.message.reply_to_message is not None:
+        if len(update.message.reply_to_message.text) > 0:
+            default = update.message.reply_to_message.text
+
     image = SIMIONE.copy()
 
     draw = ImageDraw.Draw(image)
 
-    message = " ".join(ctx.args) if len(ctx.args) > 0 else "SIMIONE!"
+    message = " ".join(ctx.args) if len(ctx.args) > 0 else default
 
     message = "\n".join(textwrap.wrap(message, width=20))
 
