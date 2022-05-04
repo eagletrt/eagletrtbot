@@ -19,4 +19,5 @@ TECS_PATHS = [
     base / "tecs/tecs_4.webp",
     base / "tecs/tecs_5.webp",
     base / "tecs/tecs_6.webp",
+    base / "tecs/tecs_7.webp",
 ]

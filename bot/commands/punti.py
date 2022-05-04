@@ -36,7 +36,7 @@ def punti(update: Update, ctx: CallbackContext):
         team = ctx.args[0].upper()
         if team not in teams:
             update.message.reply_text(
-                f"No cara, il team {escape(team)} non esiste...",
+                f"No cara, il team {team} non esiste...",
                 quote=True,
             )
             return
@@ -46,7 +46,7 @@ def punti(update: Update, ctx: CallbackContext):
             number = ctx.args[1]
             if not number.lstrip("-").isdigit():
                 update.message.reply_text(
-                    f'No cara, "{escape(number)}" non è un numero...',
+                    f'No cara, "{number}" non è un numero intero...',
                     quote=True,
                 )
                 return
