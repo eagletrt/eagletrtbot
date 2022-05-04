@@ -13,7 +13,11 @@ from bot.utils import only_eagle
 def simione(update: Update, ctx: CallbackContext):
     default = "SIMIONE!"
 
-    if update.message is not None and update.message.reply_to_message is not None:
+    if (
+        update.message is not None
+        and update.message.reply_to_message is not None
+        and update.message.reply_to_message.text
+    ):
         if len(update.message.reply_to_message.text) > 0:
             default = update.message.reply_to_message.text
 
