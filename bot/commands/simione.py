@@ -26,7 +26,7 @@ def simione(update: Update, ctx: CallbackContext):
     draw = ImageDraw.Draw(image)
 
     message = " ".join(ctx.args) if len(ctx.args) > 0 else default
-
+    message = message.encode("ascii", "ignore").decode("utf-8")  # remove emojis
     message = "\n".join(textwrap.wrap(message, width=20))
 
     draw.multiline_text(
