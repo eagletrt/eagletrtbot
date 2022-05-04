@@ -9,7 +9,7 @@ from telegram.ext import CallbackContext, Dispatcher, CommandHandler
 from bot.database.base import Base
 from bot.database.session import Session
 
-from bot.media import DAY_SINCE_FIRE, DAY_SINCE_FIRE_FILE, FONT
+from bot.media import DAY_SINCE_FIRE, DAY_SINCE_FIRE_FILE, FONT_XL
 from bot.utils import only_eagle
 
 
@@ -40,9 +40,9 @@ def fire(update: Update, ctx: CallbackContext):
     a, b, c = delta[0], delta[1], delta[2]
 
     draw = ImageDraw.Draw(image)
-    draw.text((280, 610), a, font=FONT, fill=(0, 0, 0, 255))
-    draw.text((460, 610), b, font=FONT, fill=(0, 0, 0, 255))
-    draw.text((640, 610), c, font=FONT, fill=(0, 0, 0, 255))
+    draw.text((280, 610), a, font=FONT_XL, fill=(0, 0, 0, 255))
+    draw.text((460, 610), b, font=FONT_XL, fill=(0, 0, 0, 255))
+    draw.text((640, 610), c, font=FONT_XL, fill=(0, 0, 0, 255))
 
     bio = BytesIO()
     bio.name = DAY_SINCE_FIRE_FILE

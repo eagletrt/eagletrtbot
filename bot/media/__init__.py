@@ -5,7 +5,12 @@ base = Path(__file__).parent
 
 DAY_SINCE_FIRE_FILE = "days_since_fire.jpg"
 DAY_SINCE_FIRE = Image.open(base / DAY_SINCE_FIRE_FILE)
-FONT = ImageFont.truetype(str((base / "comic.ttf")), 140)
+
+SIMIONE_FILE = "simione.jpg"
+SIMIONE = Image.open(base / SIMIONE_FILE)
+
+FONT_XL = ImageFont.truetype(str((base / "comic.ttf")), 140)
+FONT_MD = ImageFont.truetype(str((base / "comic.ttf")), 50)
 
 PARKING_SHORT_PATH = base / "parking.mp3"
 
