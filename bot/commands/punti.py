@@ -54,11 +54,6 @@ def punti(update: Update, ctx: CallbackContext):
     with Session() as session:
         points = session.query(Points).order_by(Points.score.desc()).all()
 
-    missing = teams[:]
-    for point in points:
-        missing.remove(point.team)
-
-    missing_points_txt = ", ".join([f"*{team}*" for team in missing])
     points_txt = "\n\n".join(
         [
             f"{positions[index]} *{escape(item.team)}*\n✨ {escape(item.score)}"
@@ -66,10 +61,15 @@ def punti(update: Update, ctx: CallbackContext):
         ]
     )
 
-    update.message.reply_markdown_v2(
-        f"{points_txt}\n\n{missing_points_txt} con 0 punti",
-        quote=True,
-    )
+    missing = teams[:]
+    for point in points:
+        missing.remove(point.team)
+
+    if len(missing) > 0:
+        missing_points_txt = ", ".join([f"*{team}*" for team in missing])
+        points_txt = f"{points_txt}\n\n{missing_points_txt} con 0 punti"
+
+    update.message.reply_markdown_v2(points_txt, quote=True)
 
 
 def register(dispatcher: Dispatcher[CallbackContext, dict, dict, dict]):
