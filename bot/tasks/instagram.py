@@ -24,7 +24,7 @@ class InstagramMedia(Base):
 
 
 def send_media(media: Media):
-    caption = media.caption_text  # TODO: add link
+    caption = media.caption_text
     url = f"https://www.instagram.com/p/{media.code}"
     text = f"{caption}\n\n🌐 {url}"
     if media.media_type == PHOTO:

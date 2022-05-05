@@ -1,4 +1,5 @@
 from io import BytesIO
+import re
 import textwrap
 from PIL import ImageDraw
 
@@ -7,6 +8,32 @@ from telegram.ext import CallbackContext, Dispatcher, CommandHandler
 
 from bot.media import SIMIONE, SIMIONE_FILE, FONT_MD
 from bot.utils import only_eagle
+
+re_emojis = re.compile(
+    "["
+    "\U0001F600-\U0001F64F"  # emoticons
+    "\U0001F300-\U0001F5FF"  # symbols & pictographs
+    "\U0001F680-\U0001F6FF"  # transport & map symbols
+    "\U0001F1E0-\U0001F1FF"  # flags (iOS)
+    "\U00002500-\U00002BEF"  # chinese char
+    "\U00002702-\U000027B0"
+    "\U00002702-\U000027B0"
+    "\U000024C2-\U0001F251"
+    "\U0001f926-\U0001f937"
+    "\U00010000-\U0010ffff"
+    "\u2640-\u2642"
+    "\u2600-\u2B55"
+    "\u200d"
+    "\u23cf"
+    "\u23e9"
+    "\u231a"
+    "\ufe0f"  # dingbats
+    "\u3030"
+    "]+",
+    flags=re.UNICODE,
+)
+
+re_command = re.compile("/[a-zA-Z@]+")
 
 
 @only_eagle
@@ -25,9 +52,14 @@ def simione(update: Update, ctx: CallbackContext):
 
     draw = ImageDraw.Draw(image)
 
-    message = " ".join(ctx.args) if len(ctx.args) > 0 else default
-    message = message.encode("ascii", "ignore").decode("utf-8")  # remove emojis
-    message = "\n".join(textwrap.wrap(message, width=20))
+    message = (
+        re_command.sub(r"", update.message.text.strip())
+        if len(ctx.args) > 0
+        else default
+    )
+    message = message.strip()  # clean start and end
+    message = re_emojis.sub(r"", message)  # remove emojis
+    message = "\n".join(textwrap.wrap(message, width=20, replace_whitespace=False))
 
     draw.multiline_text(
         (870, 400),

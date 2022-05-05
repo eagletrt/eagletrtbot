@@ -1,3 +1,4 @@
+import re
 from sqlalchemy import Column, Integer, Sequence, String
 
 from telegram import Update
@@ -19,20 +20,12 @@ teams = ["SW", "HW", "MT", "DMT", "EMT"]
 positions = ["👑", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
 
 
+re_points = re.compile("^([+-]?[1-9]\d*|0)$")
+
+
 @only_eagle
 def punti(update: Update, ctx: CallbackContext):
-    if len(ctx.args) > 0:
-        if ctx.args[0] == "reset":
-            with Session() as session:
-                session.query(Points).delete()
-                session.commit()
-
-            update.message.reply_text(
-                f"Ok cara, ho cancellato tutti i punti",
-                quote=True,
-            )
-            return
-
+    if len(ctx.args) == 2:
         team = ctx.args[0].upper()
         if team not in teams:
             update.message.reply_text(
@@ -41,16 +34,14 @@ def punti(update: Update, ctx: CallbackContext):
             )
             return
 
-        amount = 1
-        if len(ctx.args) > 1:
-            number = ctx.args[1]
-            if not number.lstrip("-").isdigit():
-                update.message.reply_text(
-                    f'No cara, "{number}" non è un numero intero...',
-                    quote=True,
-                )
-                return
-            amount = int(number)
+        number = ctx.args[1]
+        if re_points.match(number) is None:
+            update.message.reply_text(
+                f'No cara, "{number}" non è un numero intero...',
+                quote=True,
+            )
+            return
+        amount = int(number)
 
         with Session() as session:
             points = session.query(Points).filter_by(team=team).first()
