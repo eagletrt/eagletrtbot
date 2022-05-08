@@ -6,8 +6,8 @@ base = Path(__file__).parent
 DAY_SINCE_FIRE_FILE = "days_since_fire.jpg"
 DAY_SINCE_FIRE = Image.open(base / DAY_SINCE_FIRE_FILE)
 
-SIMIONE_FILE = "simione.jpg"
-SIMIONE = Image.open(base / SIMIONE_FILE)
+SIMIONE = Image.open(base / "simione.jpg")
+VOLPONE = Image.open(base / "volpone.jpg")
 
 FONT_XL = ImageFont.truetype(str((base / "comic.ttf")), 140)
 FONT_MD = ImageFont.truetype(str((base / "comic.ttf")), 50)
