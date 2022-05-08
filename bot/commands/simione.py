@@ -50,7 +50,7 @@ def simione(update: Update, ctx: CallbackContext):
 @only_eagle
 def volpone(update: Update, ctx: CallbackContext):
     center = (370, 355)
-    max_size = (666, 372)
+    max_size = (655, 365)
     template = VOLPONE
     default = "VOLPONE!"
     text_width = 32
