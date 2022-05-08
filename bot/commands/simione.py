@@ -43,7 +43,8 @@ def simione(update: Update, ctx: CallbackContext):
     max_size = (460, 360)
     template = SIMIONE
     default = "SIMIONE!"
-    send_template(update, ctx, template, center, max_size, default)
+    text_width = 20
+    send_template(update, ctx, template, center, max_size, default, text_width)
 
 
 @only_eagle
@@ -52,7 +53,8 @@ def volpone(update: Update, ctx: CallbackContext):
     max_size = (666, 372)
     template = VOLPONE
     default = "VOLPONE!"
-    send_template(update, ctx, template, center, max_size, default)
+    text_width = 32
+    send_template(update, ctx, template, center, max_size, default, text_width)
 
 
 def send_template(
@@ -62,6 +64,7 @@ def send_template(
     center: Tuple[int, int],
     max_size: Tuple[int, int],
     default: str,
+    text_width: int
 ):
     other_image = None
 
@@ -88,7 +91,7 @@ def send_template(
     if len(message) >= 0:
         message = message.strip()  # clean start and end
         message = re_emojis.sub(r"", message)  # remove emojis
-        message = "\n".join(textwrap.wrap(message, width=20, replace_whitespace=False))
+        message = "\n".join(textwrap.wrap(message, width=text_width, replace_whitespace=False))
         draw.multiline_text(
             center,
             message,
