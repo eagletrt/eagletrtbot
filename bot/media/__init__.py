@@ -9,6 +9,8 @@ DAY_SINCE_FIRE = Image.open(base / DAY_SINCE_FIRE_FILE)
 SIMIONE = Image.open(base / "simione.jpg")
 VOLPONE = Image.open(base / "volpone.jpg")
 
+TECSONE = Image.open(base / "tecsone.png")
+
 FONT_XL = ImageFont.truetype(str((base / "comic.ttf")), 140)
 FONT_MD = ImageFont.truetype(str((base / "comic.ttf")), 50)
 

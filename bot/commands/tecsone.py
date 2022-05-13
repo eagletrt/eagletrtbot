@@ -1,4 +1,5 @@
 from io import BytesIO
+import re
 import textwrap
 from typing import Tuple
 from PIL import Image, ImageDraw, ImageOps
@@ -6,39 +7,18 @@ from PIL import Image, ImageDraw, ImageOps
 from telegram import Update
 from telegram.ext import CallbackContext, Dispatcher, CommandHandler
 
-from bot.media import SIMIONE, FONT_MD, VOLPONE
+from bot.media import FONT_MD, TECSONE
 from bot.utils import only_eagle, re_command, re_emojis
 
 
 @only_eagle
-def simione(update: Update, ctx: CallbackContext):
-    center = (870, 400)
-    max_size = (460, 360)
-    template = SIMIONE
-    default = "SIMIONE!"
-    text_width = 20
-    send_template(update, ctx, template, center, max_size, default, text_width)
-
-
-@only_eagle
-def volpone(update: Update, ctx: CallbackContext):
-    center = (370, 355)
-    max_size = (655, 365)
-    template = VOLPONE
-    default = "VOLPONE!"
+def tecsone(update: Update, ctx: CallbackContext):
+    center = (540, 370)
+    max_size = (1080, 740)
+    template = TECSONE
+    default = "TECSONE!"
     text_width = 32
-    send_template(update, ctx, template, center, max_size, default, text_width)
 
-
-def send_template(
-    update: Update,
-    ctx: CallbackContext,
-    template: Image,
-    center: Tuple[int, int],
-    max_size: Tuple[int, int],
-    default: str,
-    text_width: int,
-):
     other_image = None
 
     if update.message is not None and update.message.reply_to_message is not None:
@@ -58,8 +38,8 @@ def send_template(
         else default
     )
 
-    image = template.copy()
-    draw = ImageDraw.Draw(image)
+    background = Image.new("RGB", template.size, color="black")
+    draw = ImageDraw.Draw(background)
 
     if len(message) >= 0:
         message = message.strip()  # clean start and end
@@ -73,7 +53,7 @@ def send_template(
             anchor="mm",
             align="center",
             font=FONT_MD,
-            fill=(0, 0, 0, 255),
+            fill=(255, 255, 255, 255),
         )
 
     if other_image is not None:
@@ -82,19 +62,20 @@ def send_template(
             center[0] - other_image.width // 2,
             center[1] - other_image.height // 2,
         )
-        image.paste(other_image, offset)
+        background.paste(other_image, offset)
         other_image.close()
 
+    background.paste(template, (0, 0), template)
+
     bio = BytesIO()
-    bio.name = "meme.jpg"
-    image.save(bio, "JPEG")
+    bio.name = "meme.png"
+    background.save(bio, "JPEG")
     bio.seek(0)
     update.message.reply_photo(bio)
 
-    image.close()
+    background.close()
     bio.close()
 
 
 def register(dispatcher: Dispatcher[CallbackContext, dict, dict, dict]):
-    dispatcher.add_handler(CommandHandler("simione", simione))
-    dispatcher.add_handler(CommandHandler("volpone", volpone))
+    dispatcher.add_handler(CommandHandler("tecsone", tecsone))
