@@ -13,11 +13,12 @@ from bot.utils import only_eagle, re_command, re_emojis
 
 @only_eagle
 def tecsone(update: Update, ctx: CallbackContext):
-    center = (540, 370)
+    text_center = (650, 370)
+    image_center = (540, 370)
     max_size = (1080, 740)
     template = TECSONE
     default = "TECSONE!"
-    text_width = 32
+    text_width = 35
 
     other_image = None
 
@@ -48,7 +49,7 @@ def tecsone(update: Update, ctx: CallbackContext):
             textwrap.wrap(message, width=text_width, replace_whitespace=False)
         )
         draw.multiline_text(
-            center,
+            text_center,
             message,
             anchor="mm",
             align="center",
@@ -59,8 +60,8 @@ def tecsone(update: Update, ctx: CallbackContext):
     if other_image is not None:
         other_image = ImageOps.contain(other_image, max_size)
         offset = (
-            center[0] - other_image.width // 2,
-            center[1] - other_image.height // 2,
+            image_center[0] - other_image.width // 2,
+            image_center[1] - other_image.height // 2,
         )
         background.paste(other_image, offset)
         other_image.close()
