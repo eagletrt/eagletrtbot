@@ -29,6 +29,11 @@ def tecsone(update: Update, ctx: CallbackContext):
                 byte_array = BytesIO(photo.get_file().download_as_bytearray())
                 other_image = Image.open(byte_array)
                 default = ""
+        if update.message.reply_to_message.sticker is not None:
+            sticker = update.message.reply_to_message.sticker
+            byte_array = BytesIO(sticker.get_file().download_as_bytearray())
+            other_image = Image.open(byte_array)
+            default = ""
         if update.message.reply_to_message.text is not None:
             if len(update.message.reply_to_message.text) > 0:
                 default = update.message.reply_to_message.text
