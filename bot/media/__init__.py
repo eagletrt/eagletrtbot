@@ -3,8 +3,7 @@ from PIL import Image, ImageFont
 
 base = Path(__file__).parent
 
-DAY_SINCE_FIRE_FILE = "days_since_fire.jpg"
-DAY_SINCE_FIRE = Image.open(base / DAY_SINCE_FIRE_FILE)
+DAY_SINCE_FIRE = Image.open(base / "days_since_fire.jpg")
 
 SIMIONE = Image.open(base / "simione.jpg")
 VOLPONE = Image.open(base / "volpone.jpg")

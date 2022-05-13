@@ -86,10 +86,11 @@ def send_template(
         other_image.close()
 
     bio = BytesIO()
-    bio.name = "meme.jpg"
-    image.save(bio, "JPEG")
+    bio.name = "meme.webp"
+    image.save(bio, "WEBP")
     bio.seek(0)
-    update.message.reply_photo(bio)
+
+    update.message.reply_sticker(bio)
 
     image.close()
     bio.close()

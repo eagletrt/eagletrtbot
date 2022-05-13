@@ -39,8 +39,8 @@ def tecsone(update: Update, ctx: CallbackContext):
         else default
     )
 
-    background = Image.new("RGB", template.size, color="black")
-    draw = ImageDraw.Draw(background)
+    image = Image.new("RGB", template.size, color="black")
+    draw = ImageDraw.Draw(image)
 
     if len(message) >= 0:
         message = message.strip()  # clean start and end
@@ -63,18 +63,19 @@ def tecsone(update: Update, ctx: CallbackContext):
             image_center[0] - other_image.width // 2,
             image_center[1] - other_image.height // 2,
         )
-        background.paste(other_image, offset)
+        image.paste(other_image, offset)
         other_image.close()
 
-    background.paste(template, (0, 0), template)
+    image.paste(template, (0, 0), template)
 
     bio = BytesIO()
-    bio.name = "meme.png"
-    background.save(bio, "JPEG")
+    bio.name = "meme.webp"
+    image.save(bio, "WEBP")
     bio.seek(0)
-    update.message.reply_photo(bio)
 
-    background.close()
+    update.message.reply_sticker(bio)
+
+    image.close()
     bio.close()
 
 

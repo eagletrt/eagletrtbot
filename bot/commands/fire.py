@@ -9,7 +9,7 @@ from telegram.ext import CallbackContext, Dispatcher, CommandHandler
 from bot.database.base import Base
 from bot.database.session import Session
 
-from bot.media import DAY_SINCE_FIRE, DAY_SINCE_FIRE_FILE, FONT_XL
+from bot.media import DAY_SINCE_FIRE, FONT_XL
 from bot.utils import only_eagle
 
 
@@ -45,11 +45,14 @@ def fire(update: Update, ctx: CallbackContext):
     draw.text((640, 610), c, font=FONT_XL, fill=(0, 0, 0, 255))
 
     bio = BytesIO()
-    bio.name = DAY_SINCE_FIRE_FILE
+    bio.name = "meme.webp"
     image.save(bio, "WEBP")
     bio.seek(0)
 
     update.message.reply_sticker(bio)
+
+    image.close()
+    bio.close()
 
 
 def register(dispatcher: Dispatcher[CallbackContext, dict, dict, dict]):
