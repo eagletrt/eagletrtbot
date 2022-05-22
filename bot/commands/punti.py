@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, Sequence, String
 
 from telegram import Update
 from telegram.ext import CallbackContext, Dispatcher, CommandHandler
+from bot.commands.simione import volpone
 
 from bot.database.base import Base
 from bot.database.session import Session
@@ -18,7 +19,9 @@ class Points(Base):
 
 teams = ["SW", "HW", "MT", "DMT", "PR", "MGT"]
 positions = ["👑", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"]
-banned = ["@CapoElettronico"]
+banned = [
+    68827761, # @CapoElettronico
+]
 
 
 re_points = re.compile("^([+-]?[1-9]\d*|0)$")
@@ -27,6 +30,9 @@ re_points = re.compile("^([+-]?[1-9]\d*|0)$")
 @only_eagle
 def punti(update: Update, ctx: CallbackContext):
     if len(ctx.args) == 2:
+        if update.effective_user.id in banned:
+            volpone(update, ctx)
+            return
         team = ctx.args[0].upper()
         if team not in teams:
             update.message.reply_text(
