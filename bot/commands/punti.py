@@ -11,13 +11,14 @@ from bot.utils import escape, only_eagle
 
 class Points(Base):
     __tablename__ = "points"
-    id = Column(Integer, Sequence("odg_id_seq"), primary_key=True)
+    id = Column(Integer, Sequence("points_id_seq"), primary_key=True)
     team = Column(String)
     score = Column(Integer)
 
 
 teams = ["SW", "HW", "MT", "DMT", "PR", "MGT"]
 positions = ["👑", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"]
+banned = ["@CapoElettronico"]
 
 
 re_points = re.compile("^([+-]?[1-9]\d*|0)$")
