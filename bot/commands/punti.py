@@ -20,7 +20,7 @@ class Points(Base):
 teams = ["SW", "HW", "MT", "DMT", "PR", "MGT"]
 positions = ["👑", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"]
 banned = [
-    68827761, # @CapoElettronico
+    68827761,  # @CapoElettronico
 ]
 
 
