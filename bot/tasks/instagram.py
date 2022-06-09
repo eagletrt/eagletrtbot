@@ -1,6 +1,7 @@
 import os
 
 from instagrapi import Client
+from instagrapi.exceptions import LoginRequired
 from instagrapi.types import Media
 
 from sqlalchemy import Column, Integer, Sequence
@@ -45,6 +46,13 @@ def send_media(media: Media):
     with open(LIKE_AND_SAVE, "rb") as sticker:
         BOT.send_sticker(config.SPAM, sticker)
 
+        
+def handle_exception(client: Client, error: Exception):
+    if isinstance(error, LoginRequired):
+        print(error)
+        client.relogin()
+        return 
+    raise error
 
 def task():
     if os.environ.get("NO_INSTAGRAM", None) is not None:
@@ -52,18 +60,20 @@ def task():
         return
 
     cl = Client()
+    cl.handle_exception = handle_exception
 
     try:
         if os.path.exists("data/instagram.json"):
             cl.load_settings("data/instagram.json")
         cl.login("eagletrt", os.environ["INSTAGRAM_PASSWORD"])
-        if not os.path.exists("data/instagram.json"):
-            cl.dump_settings("data/instagram.json")
         cl.get_timeline_feed()
     except Exception as error:
         print(error)
         print("instagram login failed")
         return
+
+    if not os.path.exists("data/instagram.json"):
+        cl.dump_settings("data/instagram.json")
 
     medias = cl.user_medias(cl.user_id, amount=1)
 
