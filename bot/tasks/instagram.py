@@ -46,13 +46,14 @@ def send_media(media: Media):
     with open(LIKE_AND_SAVE, "rb") as sticker:
         BOT.send_sticker(config.SPAM, sticker)
 
-        
+
 def handle_exception(client: Client, error: Exception):
     if isinstance(error, LoginRequired):
         print(error)
         client.relogin()
-        return 
+        return
     raise error
+
 
 def task():
     if os.environ.get("NO_INSTAGRAM", None) is not None:

@@ -13,7 +13,9 @@ TECSONE = Image.open(base / "tecsone.png")
 FONT_XL = ImageFont.truetype(str((base / "comic.ttf")), 140)
 FONT_MD = ImageFont.truetype(str((base / "comic.ttf")), 50)
 
-PARKING_SHORT_PATH = base / "parking.mp3"
+PARKING_PATH = base / "parking.mp3"
+
+ALECS_VOLPE_PATH = base / "alecs_volpe.mp3"
 
 LIKE_AND_SAVE = base / "like_and_save.webp"
 
