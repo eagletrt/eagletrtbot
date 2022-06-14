@@ -63,7 +63,7 @@ def main() -> None:
     updater.start_polling()
 
     instagram_task = scheduler.add_job(
-        instagram.task, "interval", minutes=5, jobstore="volatile"
+        instagram.task, "interval", minutes=30, jobstore="volatile"
     )
 
     scheduler.start()

@@ -4,7 +4,6 @@ from sqlalchemy import Column, Integer, Sequence, String
 from telegram import Update
 from telegram.ext import CallbackContext, Dispatcher, CommandHandler
 from bot.commands.brao import volpe
-from bot.commands.simione import volpone
 
 from bot.database.base import Base
 from bot.database.session import Session
@@ -32,9 +31,7 @@ re_points = re.compile("^([+-]?[1-9]\d*|0)$")
 def punti(update: Update, ctx: CallbackContext):
     if len(ctx.args) == 2:
         if update.effective_user.id in banned:
-            volpone(update, ctx)
             volpe(update, ctx)
-            return
         team = ctx.args[0].upper()
         if team not in teams:
             update.message.reply_text(
