@@ -7,7 +7,6 @@ from bot.commands import brao, fire, odg, punti, simione, spesa, tecsone, tracke
 
 from bot.jobs import scheduler
 from bot.conversations import remindme
-from bot.tasks import instagram
 from bot.database.engine import engine
 from bot.database.base import Base
 from bot.database.session import Session
@@ -62,17 +61,12 @@ def main() -> None:
 
     updater.start_polling()
 
-    instagram_task = scheduler.add_job(
-        instagram.task, "interval", minutes=30, jobstore="volatile"
-    )
-
     scheduler.start()
 
     instagram.task()
 
     updater.idle()
 
-    instagram_task.remove()
     scheduler.shutdown()
 
 
