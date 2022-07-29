@@ -63,8 +63,6 @@ def main() -> None:
 
     scheduler.start()
 
-    instagram.task()
-
     updater.idle()
 
     scheduler.shutdown()

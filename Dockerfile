@@ -1,11 +1,9 @@
 FROM python:3
 
-RUN pip install poetry
+COPY requirements.txt ./
 
-COPY poetry.lock pyproject.toml ./
-
-RUN poetry install 
+RUN pip3 install -r requirements.txt
 
 COPY . ./
 
-ENTRYPOINT [ "poetry", "run", "python3", "bot.py" ]
+ENTRYPOINT [ "python3", "bot.py" ]

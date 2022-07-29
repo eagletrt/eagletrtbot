@@ -4,3 +4,4 @@ jobs.sqlite
 bot.sqlite
 bot.pickle
 instagram.json
+Makefile
