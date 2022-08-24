@@ -15,6 +15,8 @@ FONT_MD = ImageFont.truetype(str((base / "comic.ttf")), 50)
 
 PARKING_PATH = base / "parking.mp3"
 
+BOSE_PATH = base / "bose.mp3"
+
 ALECS_VOLPE_PATH = base / "alecs_volpe.mp3"
 
 LIKE_AND_SAVE = base / "like_and_save.webp"
