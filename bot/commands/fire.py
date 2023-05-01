@@ -10,7 +10,6 @@ from bot.database.base import Base
 from bot.database.session import Session
 
 from bot.media import DAY_SINCE_FIRE, FONT_XL
-from bot.utils import only_eagle
 
 
 class Fires(Base):
@@ -19,7 +18,6 @@ class Fires(Base):
     when = Column(DateTime)
 
 
-@only_eagle
 def fire(update: Update, ctx: CallbackContext):
     if len(ctx.args) == 1 and ctx.args[0] == "reset":
         with Session() as session:

@@ -19,7 +19,7 @@ from bot.database.base import Base
 from bot.database.session import Session
 from bot.jobs import scheduler
 from bot.singleton import BOT
-from bot.utils import escape, only_eagle
+from bot.utils import escape
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +39,6 @@ REMINDME_WHEN_ID = "remindme_what"
 REMINDME_QUESTION_ID = "remindme_question_ID"
 
 
-@only_eagle
 def remindme(update: Update, ctx: CallbackContext) -> int:
     if len(ctx.args) == 0:
         update.message.reply_text(
@@ -107,7 +106,6 @@ def remindme_what(update: Update, ctx: CallbackContext) -> int:
     return ConversationHandler.END
 
 
-@only_eagle
 def reminders(update: Update, _: CallbackContext) -> None:
     chat = update.effective_chat.id
     with Session() as session:

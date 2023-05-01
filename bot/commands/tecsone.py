@@ -8,10 +8,9 @@ from telegram import Update
 from telegram.ext import CallbackContext, Dispatcher, CommandHandler
 
 from bot.media import FONT_MD, TECSONE
-from bot.utils import only_eagle, re_command, re_emojis
+from bot.utils import  re_command, re_emojis
 
 
-@only_eagle
 def tecsone(update: Update, ctx: CallbackContext):
     text_center = (650, 370)
     image_center = (540, 370)
