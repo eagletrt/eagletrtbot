@@ -7,10 +7,9 @@ from telegram import Update
 from telegram.ext import CallbackContext, Dispatcher, CommandHandler
 
 from bot.media import SIMIONE, FONT_MD, VOLPONE
-from bot.utils import only_eagle, re_command, re_emojis
+from bot.utils import  re_command, re_emojis
 
 
-@only_eagle
 def simione(update: Update, ctx: CallbackContext):
     center = (870, 400)
     max_size = (460, 360)
@@ -20,7 +19,6 @@ def simione(update: Update, ctx: CallbackContext):
     send_template(update, ctx, template, center, max_size, default, text_width)
 
 
-@only_eagle
 def volpone(update: Update, ctx: CallbackContext):
     center = (370, 355)
     max_size = (655, 365)

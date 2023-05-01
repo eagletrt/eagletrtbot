@@ -5,7 +5,7 @@ from telegram.ext import CallbackContext, Dispatcher, CommandHandler
 
 from bot.database.base import Base
 from bot.database.session import Session
-from bot.utils import escape, only_eagle
+from bot.utils import escape
 
 
 class Item(Base):
@@ -17,7 +17,6 @@ class Item(Base):
     time_created = Column(DateTime(timezone=True), server_default=func.now())
 
 
-@only_eagle
 def spesa(update: Update, ctx: CallbackContext):
     chat = update.effective_chat.id
     if len(ctx.args) == 1 and ctx.args[0] == "reset":

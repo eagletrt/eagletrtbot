@@ -21,19 +21,6 @@ def sudo(
     return callback
 
 
-def only_eagle(
-    fn: Callable[[Update, CallbackContext], None]
-) -> Callable[[Update, CallbackContext], None]:
-    @functools.wraps(fn)
-    def callback(update: Update, ctx: CallbackContext):
-        chat = update.effective_chat
-        if chat.id in config.EAGLE:
-            return fn(update, ctx)
-        return None
-
-    return callback
-
-
 def escape(anything: Any) -> str:
     return escape_markdown(str(anything), version=2)
 

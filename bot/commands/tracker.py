@@ -9,7 +9,6 @@ from telegram.ext import (
 from bot.database.base import Base
 from bot.database.session import Session
 
-from bot.utils import only_eagle
 
 
 class User(Base):
@@ -19,7 +18,6 @@ class User(Base):
     username = Column(String)
 
 
-@only_eagle
 def tracker(update: Update, _: CallbackContext):
     with Session() as session:
         user = User(

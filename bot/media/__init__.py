@@ -19,6 +19,8 @@ BOSE_PATH = base / "bose.mp3"
 
 ALECS_VOLPE_PATH = base / "alecs_volpe.mp3"
 
+NICO_PATH = base / "nico.mp3"
+
 LIKE_AND_SAVE = base / "like_and_save.webp"
 
 TECS_PATHS = [

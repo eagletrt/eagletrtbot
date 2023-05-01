@@ -7,7 +7,7 @@ from bot.commands.brao import volpe
 
 from bot.database.base import Base
 from bot.database.session import Session
-from bot.utils import escape, only_eagle
+from bot.utils import escape
 
 
 class Points(Base):
@@ -27,7 +27,6 @@ banned = [
 re_points = re.compile("^([+-]?[1-9]\d*|0)$")
 
 
-@only_eagle
 def punti(update: Update, ctx: CallbackContext):
     if len(ctx.args) == 2:
         if update.effective_user.id in banned:
