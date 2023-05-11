@@ -48,7 +48,7 @@ def main() -> None:
     remindme.register(dispatcher)
     fire.register(dispatcher)
     brao.register(dispatcher)
-    eso.register(dispatcher)
+    tonis.register(dispatcher)
     odg.register(dispatcher)
     punti.register(dispatcher)
     simione.register(dispatcher)
