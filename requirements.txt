@@ -1,9 +1,9 @@
 apscheduler==3.6.3
 cachetools==4.2.2
-certifi==2021.10.8
+certifi>=2022.12.07
 dateparser==1.1.0
 greenlet==1.1.2
-pillow==9.0.1
+pillow>=9.2.0
 python-dateutil==2.8.2
 python-telegram-bot==13.11
 pytz-deprecation-shim==0.1.0.post0
