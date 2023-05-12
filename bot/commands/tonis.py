@@ -3,8 +3,8 @@ from telegram import Update
 from telegram.ext import CallbackContext, Dispatcher, CommandHandler
 
 
-start = ['To', 'Ti', 'Ni', 'No', 'Mi']
-end = ['min', 'nin', 'nis', 'mis', 'tis']
+start = ['To', 'Tho', 'Ti', 'Thi', 'Ni','No', 'Mi']
+end = ['min', 'nin', 'ñin', 'nis', 'ñis', 'mis', 'tis', 'mas', 'nas']
 
 
 def eso(update: Update, _: CallbackContext):
