@@ -3,7 +3,7 @@ import logging
 
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext, PicklePersistence
-from bot.commands import brao, tonis, fire, odg, punti, simione, spesa, tecsone, tracker
+from bot.commands import brao, tonis, fire, odg, punti, simione, spesa, tecsone, tracker, vsv
 
 from bot.jobs import scheduler
 from bot.conversations import remindme
@@ -55,6 +55,7 @@ def main() -> None:
     tecsone.register(dispatcher)
     tracker.register(dispatcher)
     spesa.register(dispatcher)
+    vsv.register(dispatcher)
 
     bot = dispatcher.bot
 
