@@ -5,5 +5,7 @@ bot.sqlite
 bot.pickle
 instagram.json
 Makefile
+lab_attendances_cache.json
+telegram_to_email_cache.json
 
 venv
