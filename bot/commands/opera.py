@@ -23,7 +23,7 @@ def send_random_monkey_image(update: Update, ctx: CallbackContext):
 
 
 def send_random_transparent_stuff_image(update: Update, ctx: CallbackContext):
-    send_photo(update, "transparent", "bot/media/default_transparent.jpg")
+    send_photo(update, "empty room", "bot/media/default_transparent.jpg")
 
 
 def register(dispatcher: Dispatcher[CallbackContext, dict, dict, dict]):
