@@ -21,6 +21,8 @@ def send_photo(update: Update, query: str, default_path: str):
 def send_random_monkey_image(update: Update, ctx: CallbackContext):
     send_photo(update, "monkey", "bot/media/default_monkey.png")
 
+def send_random_paste_image(update: Update, ctx: CallbackContext):
+    send_photo(update, "pastries", "bot/media/default_pastries.png")
 
 def send_random_transparent_stuff_image(update: Update, ctx: CallbackContext):
     send_photo(update, "empty room", "bot/media/default_transparent.jpg")
@@ -28,4 +30,6 @@ def send_random_transparent_stuff_image(update: Update, ctx: CallbackContext):
 
 def register(dispatcher: Dispatcher[CallbackContext, dict, dict, dict]):
     dispatcher.add_handler(CommandHandler("opera", send_random_monkey_image))
+    dispatcher.add_handler(CommandHandler("simia", send_random_monkey_image))
+    dispatcher.add_handler(CommandHandler("paste", send_random_paste_image))
     dispatcher.add_handler(CommandHandler("fastenal", send_random_transparent_stuff_image))
