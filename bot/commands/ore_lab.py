@@ -8,7 +8,7 @@ import pyairtable, os, sys, json, time, threading
 
 AIRTABLE_UPDATER_MUTEX = threading.Lock()
 LAST_ATTENDANCES_UPDATE = time.time()
-MIN_DELTA_REQUESTS = 60
+MIN_DELTA_REQUESTS = 2
 AIRTABLE_TOKEN = os.environ["SECRET_AIRTABLE_TOKEN"]
 HR_BASE_ID = os.environ["AIRTABLE_HR_BASE_ID"]
 LAB_ATTENDANCES_TABLE_ID=os.environ["AIRTABLE_LAB_ATTENDANCES_TABLE_ID"]
@@ -74,6 +74,53 @@ def get_lab_attendances_info(username):
     return "Oh no, sembra che tu non sia mai stato in lab."
 
 
+def get_lab_presence(username) -> bool:
+    global LAST_ATTENDANCES_UPDATE
+    telegram_to_email_file = open(TELEGRAM_TO_EMAIL_CACHE_FP)
+    TELEGRAM_TO_EMAIL = json.load(telegram_to_email_file)
+    lab_attendances_cache_file = open(LAB_ATTENDANCES_CACHE_FD)
+    LAB_ATTENDANCES_CACHE = json.load(lab_attendances_cache_file)
+    telegram_to_email_file.close()
+    lab_attendances_cache_file.close()
+    current_time = time.time()
+    if (current_time - LAST_ATTENDANCES_UPDATE) > MIN_DELTA_REQUESTS:
+        LAST_ATTENDANCES_UPDATE = current_time
+        if not update_all_caches():
+            return "Mmm, non riesco a scaricare nuovi dati... riprova più tardi..."
+    username_with_handle = "@" + username
+    email = TELEGRAM_TO_EMAIL.get(username)
+    email_with_handle = TELEGRAM_TO_EMAIL.get(username_with_handle)
+    if email == None and email_with_handle == None:
+        return "Oh no cara, mi risulta che tu non esista. Contatta qualcuno.\n"
+    if email == None:
+        email = email_with_handle
+    for record in LAB_ATTENDANCES_CACHE:
+        data = record["fields"]
+        cemail = data.get("email")
+        if email == cemail:
+            try:
+                presente_in_lab = data.get("Presente in Lab")
+                if presente_in_lab:
+                    return "Risulti attualmente presente in lab"
+                else:
+                    return "Attualmente non risulti presente in lab"
+            except:
+                return "Errore Tecnico, riprova tra un attimo"
+    return "Oh no, sembra che tu non sia mai stato in lab."
+
+
+def presente_in_lab(update: Update, ctx: CallbackContext) -> None:
+    username = update.message.from_user.username
+    if AIRTABLE_UPDATER_MUTEX.locked():
+        return update.message.reply_text(
+            f"Mi dispiace. Sono impegnata al momento. Riprova giusto tra un paio di secondi."
+        )
+    AIRTABLE_UPDATER_MUTEX.acquire()
+    message = get_lab_presence(username)
+    AIRTABLE_UPDATER_MUTEX.release()
+    return update.message.reply_text(f"{message}")
+    
+
 def ore(update: Update, ctx: CallbackContext) -> None:
     username = update.message.from_user.username
     # username = update.message.chat.username
@@ -95,3 +142,4 @@ def register(dispatcher: Dispatcher[CallbackContext, dict, dict, dict]):
         )
         exit(1)
     dispatcher.add_handler(CommandHandler("ore", ore))
+    dispatcher.add_handler(CommandHandler("inlab", presente_in_lab))
