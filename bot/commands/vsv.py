@@ -6,7 +6,7 @@ from telegram.ext import CallbackContext, Dispatcher, CommandHandler
 
 def vsv(update: Update, _: CallbackContext):
     now = datetime.datetime.now().date()
-    vsv_date = datetime.date(2023, 7, 6)
+    vsv_date = datetime.date(2024, 7, 5)
     days_to_vsv = (vsv_date - now).days
 
     html = requests.get('https://www.ladige.it/cultura-e-spettacoli').text
