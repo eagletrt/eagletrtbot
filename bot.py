@@ -2,8 +2,8 @@ import os
 import logging
 
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext, PicklePersistence
-from bot.commands import brao, tonis, fire, odg, punti, simione, spesa, tecsone, tracker, vsv, ore_lab, opera
+from telegram.ext import Updater, CommandHandler, CallbackContext, PicklePersistence, MessageHandler, Filters
+from bot.commands import brao, tonis, fire, odg, punti, simione, spesa, tecsone, tracker, vsv, ore_lab, opera, custom_tags
 
 from bot.jobs import scheduler
 from bot.conversations import remindme
@@ -44,6 +44,18 @@ def main() -> None:
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("info", info))
+    dispatcher.add_handler(MessageHandler(Filters.regex(r'@ct'), custom_tags.custom_tag_ct))
+    dispatcher.add_handler(MessageHandler(Filters.regex(r'@drivers'), custom_tags.custom_tag_drivers))
+    dispatcher.add_handler(MessageHandler(Filters.regex(r'@driver'), custom_tags.custom_tag_drivers))
+    dispatcher.add_handler(MessageHandler(Filters.regex(r'@pm'), custom_tags.custom_tag_pm))
+    dispatcher.add_handler(MessageHandler(Filters.regex(r'@hr'), custom_tags.custom_tag_pm))
+    
+    dispatcher.add_handler(MessageHandler(Filters.regex(r'@sw'), custom_tags.custom_tag_sw))
+    dispatcher.add_handler(MessageHandler(Filters.regex(r'@hw'), custom_tags.custom_tag_hw))
+    dispatcher.add_handler(MessageHandler(Filters.regex(r'@dmt'), custom_tags.custom_tag_dmt))
+    dispatcher.add_handler(MessageHandler(Filters.regex(r'@mt'), custom_tags.custom_tag_mt))
+    dispatcher.add_handler(MessageHandler(Filters.regex(r'@cm'), custom_tags.custom_tag_cm))
+    dispatcher.add_handler(MessageHandler(Filters.regex(r'@mgt'), custom_tags.custom_tag_mgt))
 
     remindme.register(dispatcher)
     fire.register(dispatcher)

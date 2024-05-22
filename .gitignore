@@ -7,5 +7,6 @@ instagram.json
 Makefile
 lab_attendances_cache.json
 telegram_to_email_cache.json
+telegram_people_table_cache.json
 
 venv

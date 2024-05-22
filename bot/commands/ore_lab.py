@@ -3,66 +3,26 @@ from telegram.ext import (
     CommandHandler, CallbackContext, Dispatcher, CommandHandler    
 )
 from random import choice
-import pyairtable, os, sys, json, time, threading
-
-
-AIRTABLE_UPDATER_MUTEX = threading.Lock()
-LAST_ATTENDANCES_UPDATE = time.time()
-MIN_DELTA_REQUESTS = 2
-AIRTABLE_TOKEN = os.environ["SECRET_AIRTABLE_TOKEN"]
-HR_BASE_ID = os.environ["AIRTABLE_HR_BASE_ID"]
-LAB_ATTENDANCES_TABLE_ID=os.environ["AIRTABLE_LAB_ATTENDANCES_TABLE_ID"]
-PEOPLE_TABLE_ID=os.environ["AIRTABLE_PEOPLE_TABLE_ID"]
-TELEGRAM_TO_EMAIL_CACHE_FP = "telegram_to_email_cache.json"
-LAB_ATTENDANCES_CACHE_FD = "lab_attendances_cache.json"
-
-
-def update_all_caches() -> bool:
-    telegram_to_email_cache = {}
-    try:
-        AIRTABLE_API = pyairtable.Api(AIRTABLE_TOKEN)
-        LAB_ATTENDANCES_TABLE = AIRTABLE_API.table(HR_BASE_ID, LAB_ATTENDANCES_TABLE_ID)
-        PEOPLE_TABLE = AIRTABLE_API.table(HR_BASE_ID, PEOPLE_TABLE_ID)
-    except:
-        sys.stdout.write("Error updating caches!")
-        return False
-    lab_att_cache = LAB_ATTENDANCES_TABLE.all()
-    all_people_table = PEOPLE_TABLE.all()
-    for record in all_people_table:
-        record_data = record["fields"]
-        telegram_handle = record_data.get("@Telegram")
-        email = record_data.get("Email")
-        telegram_to_email_cache[telegram_handle] = email
-    with open(LAB_ATTENDANCES_CACHE_FD, "w") as fp:
-        json.dump(lab_att_cache, fp)
-        fp.close()
-    with open(TELEGRAM_TO_EMAIL_CACHE_FP, "w") as fp:
-        json.dump(telegram_to_email_cache, fp)
-        fp.close()
-    return True
+import sys, json
+from bot.commands.utils.airtable_utils import *
 
 
 def get_lab_attendances_info(username):
-    global LAST_ATTENDANCES_UPDATE
+    if not airtable_caches_updater():
+        return "Mmm, non riesco a scaricare nuovi dati... riprova più tardi..."
+    
     telegram_to_email_file = open(TELEGRAM_TO_EMAIL_CACHE_FP)
-    TELEGRAM_TO_EMAIL = json.load(telegram_to_email_file)
+    telegram_to_email = json.load(telegram_to_email_file)
     lab_attendances_cache_file = open(LAB_ATTENDANCES_CACHE_FD)
-    LAB_ATTENDANCES_CACHE = json.load(lab_attendances_cache_file)
+    lab_attendances_cache = json.load(lab_attendances_cache_file)
     telegram_to_email_file.close()
     lab_attendances_cache_file.close()
-    current_time = time.time()
-    if (current_time - LAST_ATTENDANCES_UPDATE) > MIN_DELTA_REQUESTS:
-        LAST_ATTENDANCES_UPDATE = current_time
-        if not update_all_caches():
-            return "Mmm, non riesco a scaricare nuovi dati... riprova più tardi..."
+    
     username_with_handle = "@" + username
-    email = TELEGRAM_TO_EMAIL.get(username)
-    email_with_handle = TELEGRAM_TO_EMAIL.get(username_with_handle)
-    if email == None and email_with_handle == None:
-        return "Oh no cara, mi risulta che tu non esista. Contatta qualcuno.\n"
+    email = telegram_to_email.get(username) or telegram_to_email.get(username_with_handle)
     if email == None:
-        email = email_with_handle
-    for record in LAB_ATTENDANCES_CACHE:
+        return "Oh no cara, mi risulta che tu non esista. Contatta qualcuno.\n"
+    for record in lab_attendances_cache:
         data = record["fields"]
         cemail = data.get("email")
         if email == cemail:
@@ -75,26 +35,21 @@ def get_lab_attendances_info(username):
 
 
 def get_lab_presence(username) -> bool:
-    global LAST_ATTENDANCES_UPDATE
+    if not airtable_caches_updater():
+        return "Mmm, non riesco a scaricare nuovi dati... riprova più tardi..."
+    
     telegram_to_email_file = open(TELEGRAM_TO_EMAIL_CACHE_FP)
-    TELEGRAM_TO_EMAIL = json.load(telegram_to_email_file)
+    telegram_to_email = json.load(telegram_to_email_file)
     lab_attendances_cache_file = open(LAB_ATTENDANCES_CACHE_FD)
-    LAB_ATTENDANCES_CACHE = json.load(lab_attendances_cache_file)
+    lab_attendances_cache = json.load(lab_attendances_cache_file)
     telegram_to_email_file.close()
     lab_attendances_cache_file.close()
-    current_time = time.time()
-    if (current_time - LAST_ATTENDANCES_UPDATE) > MIN_DELTA_REQUESTS:
-        LAST_ATTENDANCES_UPDATE = current_time
-        if not update_all_caches():
-            return "Mmm, non riesco a scaricare nuovi dati... riprova più tardi..."
+
     username_with_handle = "@" + username
-    email = TELEGRAM_TO_EMAIL.get(username)
-    email_with_handle = TELEGRAM_TO_EMAIL.get(username_with_handle)
-    if email == None and email_with_handle == None:
-        return "Oh no cara, mi risulta che tu non esista. Contatta qualcuno.\n"
+    email = telegram_to_email.get(username) or telegram_to_email.get(username_with_handle)
     if email == None:
-        email = email_with_handle
-    for record in LAB_ATTENDANCES_CACHE:
+        return "Oh no cara, mi risulta che tu non esista. Contatta qualcuno.\n"
+    for record in lab_attendances_cache:
         data = record["fields"]
         cemail = data.get("email")
         if email == cemail:
@@ -143,3 +98,4 @@ def register(dispatcher: Dispatcher[CallbackContext, dict, dict, dict]):
         exit(1)
     dispatcher.add_handler(CommandHandler("ore", ore))
     dispatcher.add_handler(CommandHandler("inlab", presente_in_lab))
+
