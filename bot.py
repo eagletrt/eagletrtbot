@@ -70,6 +70,7 @@ def main() -> None:
     vsv.register(dispatcher)
     ore_lab.register(dispatcher)
     opera.register(dispatcher)
+    custom_tags.register(dispatcher)
 
     bot = dispatcher.bot
 

@@ -82,4 +82,11 @@ def custom_tag_dmt(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(team_finder("DMT"), quote=True)
 
 
+def show_all_available_tags(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text("@ct @driver @pm @hr @sw @hw @cm @mgt @mt @dmt", quote=True)
+    
+
+def register(dispatcher: Dispatcher[CallbackContext, dict, dict, dict]):
+    dispatcher.add_handler(CommandHandler("tags", show_all_available_tags))
+
 
