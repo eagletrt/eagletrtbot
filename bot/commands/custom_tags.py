@@ -32,7 +32,7 @@ def team_finder(team):
     message = ""
     for person in all_people_table:
         rank = person.get("fields").get("Team")
-        if rank is not None and team in rank:
+        if rank is not None and team == rank:
             name = person.get("fields").get("@Telegram")
             active = person.get("fields").get("Status")
             if name is not None and active != "✖️ Inattivo":
