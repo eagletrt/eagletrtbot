@@ -1,4 +1,4 @@
-ADMIN = 139112443  # @notfilippo
+ADMIN = 1984959767 # @gmazzucchi
 SUB = -1001759975673  # r/eagletrt
 CT = -1001688911809
 SPAM = -1001587755304
