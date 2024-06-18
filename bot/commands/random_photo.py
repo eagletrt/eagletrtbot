@@ -25,7 +25,7 @@ def send_random_paste_image(update: Update, ctx: CallbackContext):
     send_photo(update, "pastries", "bot/media/default_pastries.png")
 
 def send_random_transparent_stuff_image(update: Update, ctx: CallbackContext):
-    send_photo(update, "empty room", "bot/media/default_transparent.jpg")
+    send_photo(update, "work gloves", "bot/media/default_transparent.jpg")
 
 
 def register(dispatcher: Dispatcher[CallbackContext, dict, dict, dict]):
