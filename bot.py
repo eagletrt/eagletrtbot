@@ -3,7 +3,7 @@ import logging
 
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext, PicklePersistence, MessageHandler, Filters
-from bot.commands import brao, tonis, fire, odg, punti, simione, spesa, tecsone, tracker, vsv, ore_lab, opera, custom_tags
+from bot.commands import brao, random_photo, tonis, fire, odg, punti, simione, spesa, tecsone, tracker, vsv, ore_lab, custom_tags
 
 from bot.jobs import scheduler
 from bot.conversations import remindme
@@ -56,6 +56,8 @@ def main() -> None:
     dispatcher.add_handler(MessageHandler(Filters.regex(r'@mt'), custom_tags.custom_tag_mt))
     dispatcher.add_handler(MessageHandler(Filters.regex(r'@cm'), custom_tags.custom_tag_cm))
     dispatcher.add_handler(MessageHandler(Filters.regex(r'@mgt'), custom_tags.custom_tag_mgt))
+    
+    dispatcher.add_handler(MessageHandler(Filters.regex(r'@inlab'), custom_tags.custom_tag_in_lab))
 
     remindme.register(dispatcher)
     fire.register(dispatcher)
@@ -69,7 +71,7 @@ def main() -> None:
     spesa.register(dispatcher)
     vsv.register(dispatcher)
     ore_lab.register(dispatcher)
-    opera.register(dispatcher)
+    random_photo.register(dispatcher)
     custom_tags.register(dispatcher)
 
     bot = dispatcher.bot
