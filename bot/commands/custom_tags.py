@@ -1,6 +1,50 @@
 from telegram import Update
-from telegram.ext import CallbackContext, Dispatcher, CommandHandler
+from telegram.ext import CallbackContext, Dispatcher, CommandHandler, MessageHandler, Filters
 from bot.commands.utils.airtable_utils import *
+
+all_tags = []
+
+# "🏆 Varano '24"
+
+def badge_finder(badge) -> str:
+    if not airtable_caches_updater():
+        return "Mmm, non riesco a scaricare nuovi dati... riprova più tardi..."
+    all_people_table_file = open(PEOPLE_TABLE_CACHE_FP)
+    all_people_table = json.load(all_people_table_file)
+    all_people_table_file.close()
+    message = ""
+    for person in all_people_table:
+        rank = person.get("fields").get("Badge")
+        if rank is not None and badge in rank:
+            name = person.get("fields").get("@Telegram")
+            active = person.get("fields").get("Status")
+            if name is not None and active != "✖️ Inattivo":
+                if name.startswith("@"):
+                    message += name + " "
+                else:
+                    message += "@" + name + " "
+    return message
+
+
+def workgroup_finder(workgroup) -> str:
+    if not airtable_caches_updater():
+        return "Mmm, non riesco a scaricare nuovi dati... riprova più tardi..."
+    all_people_table_file = open(PEOPLE_TABLE_CACHE_FP)
+    all_people_table = json.load(all_people_table_file)
+    all_people_table_file.close()
+    message = ""
+    for person in all_people_table:
+        wg = person.get("fields").get("Workgroup")
+        if wg is not None and workgroup == wg:
+            name = person.get("fields").get("@Telegram")
+            active = person.get("fields").get("Status")
+            if name is not None and active != "✖️ Inattivo":
+                if name.startswith("@"):
+                    message += name + " "
+                else:
+                    message += "@" + name + " "
+    return message
+
 
 
 def tag_finder(tag) -> str:
@@ -76,6 +120,7 @@ def inlab_finder() -> str:
         return "Nessuno in lab :<"
     return message
 
+# RANKS
 
 def custom_tag_ct(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(tag_finder("CT"), quote=True)
@@ -92,6 +137,7 @@ def custom_tag_pm(update: Update, context: CallbackContext) -> None:
 def custom_tag_hr(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(tag_finder("HR"), quote=True)
     
+# TEAMS
 
 def custom_tag_sw(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(team_finder("SW"), quote=True)
@@ -117,13 +163,39 @@ def custom_tag_dmt(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(team_finder("DMT"), quote=True)
 
 
+# WORKGROUPS
+
+def custom_tag_wg_telemetry(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text(workgroup_finder("Telemetry"), quote=True)
+    
+
+def custom_tag_wg_micro(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text(workgroup_finder("Micro"), quote=True)
+
+
+def custom_tag_wg_powertrain(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text(workgroup_finder("Powertrain"), quote=True)
+
+
+def custom_tag_wg_composites(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text(workgroup_finder("Composites"), quote=True)    
+
+
+# IN LAB
+
 def custom_tag_in_lab(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(inlab_finder(), quote=True)
 
+# ALL TAGS
 
 def show_all_available_tags(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text("@ct @driver @pm @hr @sw @hw @cm @mgt @mt @dmt @inlab", quote=True)
+    update.message.reply_text(" ".join(all_tags), quote=True)
     
+
+def add_custom_tag(dispatcher, tag, handler) -> None:
+    all_tags.append(tag)
+    dispatcher.add_handler(MessageHandler(Filters.regex(tag), handler))
+
 
 def register(dispatcher: Dispatcher[CallbackContext, dict, dict, dict]):
     dispatcher.add_handler(CommandHandler("tags", show_all_available_tags))
