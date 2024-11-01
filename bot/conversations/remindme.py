@@ -9,9 +9,10 @@ from telegram.ext import (
     CommandHandler,
     CallbackContext,
     MessageHandler,
-    Filters,
     ConversationHandler,
 )
+
+from telegram.ext import filters as Filters
 
 from sqlalchemy import Column, Integer, Sequence, String, DateTime, func
 

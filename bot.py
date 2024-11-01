@@ -2,7 +2,8 @@ import os
 import logging
 
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext, PicklePersistence, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, CallbackContext, PicklePersistence, MessageHandler
+from telegram.ext import filters as Filters
 from bot.commands import brao, random_photo, tonis, fire, odg, punti, simione, spesa, tecsone, tracker, vsv, ore_lab, custom_tags
 
 from bot.jobs import scheduler

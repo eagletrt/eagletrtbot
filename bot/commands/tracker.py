@@ -3,13 +3,12 @@ from telegram import Update
 from telegram.ext import (
     Dispatcher,
     CallbackContext,
-    Filters,
     MessageHandler,
 )
 from bot.database.base import Base
 from bot.database.session import Session
 
-
+from telegram.ext import filters as Filters
 
 class User(Base):
     __tablename__ = "users"

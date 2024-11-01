@@ -1,6 +1,7 @@
 from telegram import Update
-from telegram.ext import CallbackContext, Dispatcher, CommandHandler, MessageHandler, Filters
+from telegram.ext import CallbackContext, Dispatcher, CommandHandler, MessageHandler
 from bot.commands.utils.airtable_utils import *
+from telegram.ext import filters as Filters
 
 all_tags = []
 
