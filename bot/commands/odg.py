@@ -20,7 +20,7 @@ class Odg(Base):
 
 def odg(update: Update, ctx: CallbackContext):
 
-    thread = update.message.message_thread.id
+    thread = update.effective_message.message_thread_id
     chat = update.effective_chat.id
 
     if len(ctx.args) == 1 and ctx.args[0] == "reset":
